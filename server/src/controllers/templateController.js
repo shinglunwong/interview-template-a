@@ -10,7 +10,6 @@ export const getDefaultTemplate = async (req, res) => {
 
     res.json(template);
   } catch (error) {
-    console.error("Get template error:", error.message);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -30,7 +29,6 @@ export const createTemplate = async (req, res) => {
     const template = await Template.create({ name, fields });
     res.status(201).json(template);
   } catch (error) {
-    console.error("Create template error:", error.message);
     res.status(500).json({ message: "Server error" });
   }
 };
