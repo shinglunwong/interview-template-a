@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { fetchDefaultTemplate, createTemplate } from "../api/templateApi";
+import { createTemplate } from "../api/templateApi";
 import FieldEditor from "../components/FieldEditor";
 
 const TemplatePage = () => {
@@ -8,26 +8,8 @@ const TemplatePage = () => {
 
   const [name, setName] = useState("");
   const [fields, setFields] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    const loadTemplate = async () => {
-      try {
-        const template = await fetchDefaultTemplate();
-        setName(template.name || "");
-        setFields(template.fields || []);
-      } catch (error) {
-        setName("");
-        setFields([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadTemplate();
-  }, []);
 
   const handleAddField = () => {
     setFields((prev) => [...prev, { label: "", type: "text" }]);
@@ -42,11 +24,6 @@ const TemplatePage = () => {
   };
 
   const handleSave = async () => {
-    if (!name.trim()) {
-      setMessage("Template name is required.");
-      return;
-    }
-
     setSaving(true);
     setMessage("");
 
@@ -59,10 +36,6 @@ const TemplatePage = () => {
       setSaving(false);
     }
   };
-
-  if (loading) {
-    return <div>Loading template...</div>;
-  }
 
   return (
     <div style={{ maxWidth: 700, margin: "40px auto" }}>
